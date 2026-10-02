@@ -71,12 +71,22 @@ dart run bin/dump_sample.dart   # refreshes examples/getting_started.*
 flutter test
 ```
 
+## Download
+
+[v0.1.0](https://github.com/owen307/spike-studio/releases/tag/v0.1.0) on GitHub:
+
+- [spike-prime-studio-arm64-debug.apk](https://github.com/owen307/spike-studio/releases/download/v0.1.0/spike-prime-studio-arm64-debug.apk) — Android arm64 debug
+- [spike-prime-studio-linux-x64.tar.gz](https://github.com/owen307/spike-studio/releases/download/v0.1.0/spike-prime-studio-linux-x64.tar.gz) — Linux x64 release bundle
+
+A local rebuild writes the same names under `dist/`.
+
 ## Build
 
-Artifacts already in this tree:
+Regenerate the SP monogram before a from-source build if `assets/brand/sp-mark.png` is missing:
 
-- `dist/spike-prime-studio-arm64-debug.apk` — Android arm64 debug
-- `dist/spike-prime-studio-linux-x64.tar.gz` — Linux x64 release bundle
+```bash
+python3 scripts/render_brand.py   # needs Pillow
+```
 
 Rebuild:
 

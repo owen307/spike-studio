@@ -1,60 +1,16 @@
 name: Release
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - .github/workflows/release.yml
   workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
-  release:
+  note:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Download built artifacts
+      - name: v0.1.0 is already published
         run: |
-          set -euo pipefail
-          mkdir -p dist
-          curl -fL --retry 8 --retry-all-errors --retry-delay 2 \
-            -o dist/spike-prime-studio-arm64-debug.apk \
-            "https://attitudes-contract-armed-readily.trycloudflare.com/spike-prime-studio-arm64-debug.apk"
-          curl -fL --retry 8 --retry-all-errors --retry-delay 2 \
-            -o dist/spike-prime-studio-linux-x64.tar.gz \
-            "https://attitudes-contract-armed-readily.trycloudflare.com/spike-prime-studio-linux-x64.tar.gz"
-          test "$(wc -c < dist/spike-prime-studio-arm64-debug.apk)" -eq 112346183
-          test "$(wc -c < dist/spike-prime-studio-linux-x64.tar.gz)" -eq 10325801
-          python3 - << 'PY'
-          import hashlib, pathlib, zipfile, tarfile
-          apk = pathlib.Path("dist/spike-prime-studio-arm64-debug.apk")
-          tgz = pathlib.Path("dist/spike-prime-studio-linux-x64.tar.gz")
-          assert apk.read_bytes()[:2] == b"PK"
-          with zipfile.ZipFile(apk) as zf:
-              names = zf.namelist()
-              assert any(n.endswith("libflutter.so") for n in names), "missing libflutter.so"
-          with tarfile.open(tgz, "r:gz") as tf:
-              names = tf.getnames()
-              assert any(n.endswith("spike_prime_studio") for n in names)
-          print("apk", hashlib.sha256(apk.read_bytes()).hexdigest())
-          print("tgz", hashlib.sha256(tgz.read_bytes()).hexdigest())
-          PY
-
-      - name: Publish v0.1.0
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: v0.1.0
-          name: Spike Prime Studio v0.1.0
-          overwrite: true
-          body: |
-            Spike Prime Studio 0.1.0.
-
-            - `spike-prime-studio-arm64-debug.apk` — Android arm64 debug build (sideload). SPIKE Prime compatible. Not a Play Store package.
-            - `spike-prime-studio-linux-x64.tar.gz` — Linux x64 desktop bundle. Unpack and run `spike_prime_studio`.
-          files: |
-            dist/spike-prime-studio-arm64-debug.apk
-            dist/spike-prime-studio-linux-x64.tar.gz
+          echo "Android and Linux builds for v0.1.0 are attached to the GitHub Release."
+          echo "Rebuild locally with scripts/build_android_apk.sh and scripts/build_linux.sh."

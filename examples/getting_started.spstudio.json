@@ -1,0 +1,169 @@
+{
+  "format": "spstudio",
+  "formatVersion": 1,
+  "project": {
+    "id": "sample-drive-look",
+    "name": "Drive and look",
+    "notes": "Sample project. Pair motors on A and B, drive forward, then wait until a distance sensor on C sees something close.",
+    "slot": 0,
+    "updatedAt": "2026-10-02T00:00:00.000Z",
+    "blocks": [
+      {
+        "id": "s-start",
+        "op": "onStart",
+        "args": {},
+        "body": [],
+        "alt": []
+      },
+      {
+        "id": "s-ready",
+        "op": "defBlock",
+        "args": {
+          "name": "ready"
+        },
+        "body": [
+          {
+            "id": "s-light",
+            "op": "statusLight",
+            "args": {
+              "color": "BLUE"
+            },
+            "body": [],
+            "alt": []
+          },
+          {
+            "id": "s-beep",
+            "op": "beep",
+            "args": {
+              "freq": "523",
+              "ms": "90",
+              "volume": "60"
+            },
+            "body": [],
+            "alt": []
+          }
+        ],
+        "alt": []
+      },
+      {
+        "id": "s-call",
+        "op": "callBlock",
+        "args": {
+          "name": "ready"
+        },
+        "body": [],
+        "alt": []
+      },
+      {
+        "id": "s-note",
+        "op": "comment",
+        "args": {
+          "text": "Drive forward, then stop the drive if something is close. Edit the ports to match your build."
+        },
+        "body": [],
+        "alt": []
+      },
+      {
+        "id": "s-drive",
+        "op": "drive",
+        "args": {
+          "left": "A",
+          "right": "B",
+          "degrees": "720",
+          "steering": "0",
+          "velocity": "450"
+        },
+        "body": [],
+        "alt": []
+      },
+      {
+        "id": "s-wait",
+        "op": "waitUntil",
+        "args": {
+          "sensor": "distance",
+          "port": "C",
+          "op": "lt",
+          "value": "150",
+          "timeout": "4000",
+          "subject": "x"
+        },
+        "body": [],
+        "alt": []
+      },
+      {
+        "id": "s-if",
+        "op": "if",
+        "args": {
+          "sensor": "color",
+          "port": "D",
+          "op": "eq",
+          "value": "RED",
+          "subject": "x"
+        },
+        "body": [
+          {
+            "id": "s-happy",
+            "op": "matrixImage",
+            "args": {
+              "image": "IMAGE_HAPPY"
+            },
+            "body": [],
+            "alt": []
+          }
+        ],
+        "alt": [
+          {
+            "id": "s-pause",
+            "op": "wait",
+            "args": {
+              "ms": "200"
+            },
+            "body": [],
+            "alt": []
+          }
+        ]
+      },
+      {
+        "id": "s-back",
+        "op": "together",
+        "args": {},
+        "body": [
+          {
+            "id": "s-back-a",
+            "op": "motorDegrees",
+            "args": {
+              "port": "A",
+              "degrees": "-180",
+              "velocity": "300",
+              "stop": "BRAKE"
+            },
+            "body": [],
+            "alt": []
+          },
+          {
+            "id": "s-back-b",
+            "op": "motorDegrees",
+            "args": {
+              "port": "B",
+              "degrees": "-180",
+              "velocity": "300",
+              "stop": "BRAKE"
+            },
+            "body": [],
+            "alt": []
+          }
+        ],
+        "alt": []
+      },
+      {
+        "id": "s-text",
+        "op": "matrixText",
+        "args": {
+          "text": "Hi"
+        },
+        "body": [],
+        "alt": []
+      }
+    ]
+  }
+}
